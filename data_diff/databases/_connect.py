@@ -5,6 +5,7 @@ from contextlib import suppress
 import weakref
 
 import attrs
+from data_diff.databases.sqlite import SQLite
 import dsnparse
 import toml
 
@@ -90,6 +91,7 @@ DATABASE_BY_SCHEME = {
     "clickhouse": Clickhouse,
     "vertica": Vertica,
     "mssql": MsSQL,
+    "sqlite": SQLite,
 }
 
 
@@ -136,6 +138,7 @@ class Connect:
         - clickhouse
         - vertica
         - duckdb
+        - sqlite
         """
 
         dsn = dsnparse.parse(db_uri)
@@ -174,6 +177,9 @@ class Connect:
             kw = {}
             kw["filepath"] = dsn.dbname
             kw["dbname"] = dsn.user
+        elif scheme == "sqlite":
+            kw = {}
+            kw["database"] = dsn.host
         else:
             kw = matcher.match_path(dsn)
 
