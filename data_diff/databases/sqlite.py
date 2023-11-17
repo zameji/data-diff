@@ -4,32 +4,23 @@ import attrs
 
 from data_diff.abcs.database_types import (
     ColType,
-    Datetime,
     DbPath,
     DbTime,
-    Timestamp,
     Float,
     Decimal,
     Integer,
     Text,
     TemporalType,
     FractionalType,
-    ColType_UUID,
-    Boolean,
-    Date,
     UnknownColType,
 )
 from data_diff.databases.base import (
     ThreadedDatabase,
     import_helper,
-    ConnectError,
     BaseDialect,
 )
 from data_diff.databases.base import (
-    MD5_HEXDIGITS,
-    CHECKSUM_HEXDIGITS,
     TIMESTAMP_PRECISION_POS,
-    CHECKSUM_OFFSET,
 )
 
 
@@ -43,16 +34,41 @@ def import_sqlite3():
 @attrs.define(frozen=False)
 class Dialect(BaseDialect):
     name = "MySQL"
-    ROUNDS_ON_PREC_LOSS = True
+    ROUNDS_ON_PREC_LOSS = False
     SUPPORTS_PRIMARY_KEY = True
     SUPPORTS_INDEXES = True
     TYPE_CLASSES = {
-        # Numbers
+        "INT": Integer,
         "INTEGER": Integer,
-        "REAL": Float,
-        # Text
+        "TINYINT": Integer,
+        "SMALLINT": Integer,
+        "MEDIUMINT": Integer,
+        "BIGINT": Integer,
+        "UNSIGNED BIG INT": Integer,
+        "INT1": Integer,
+        "INT2": Integer,
+        "INT3": Integer,
+        "INT4": Integer,
+        "INT6": Integer,
+        "INT8": Integer,
+        "CHARACTER": Text,
+        "VARCHAR": Text,
+        "VARYING CHARACTER": Text,
+        "NCHAR": Text,
+        "NATIVE CHARACTER": Text,
+        "NVARCHAR": Text,
         "TEXT": Text,
+        "CLOB": Text,
+        "REAL": Float,
+        "DOUBLE": Float,
+        "DOUBLE PRECISION": Float,
+        "FLOAT": Float,
+        "NUMERIC": Float,
+        "DECIMAL": Decimal,
+        "BOOLEAN": Integer,
         # Unsupported types
+        "DATE": UnknownColType,
+        "DATETIME": UnknownColType,
         "NULL": UnknownColType,
         "BLOB": UnknownColType,
     }
