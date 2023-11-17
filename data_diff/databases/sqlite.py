@@ -92,19 +92,19 @@ class Dialect(BaseDialect):
 
     def random(self) -> str:
         "Provide SQL for generating a random number betweein 0..1"
-        return "random()"
+        return "(0.5 - RANDOM() / CAST(-9223372036854775808 AS REAL) / 2)"
 
     def current_timestamp(self) -> str:
         "Provide SQL for returning the current timestamp, aka now"
-        return "current_timestamp()"
+        return "STRFTIME('%Y-%m-%d %H:%M:%f', 'now')"
 
     def current_database(self) -> str:
         "Provide SQL for returning the current default database."
-        return "current_database()"
+        return "name from PRAGMA_database_list LIMIT 1"
 
     def current_schema(self) -> str:
         "Provide SQL for returning the current default schema."
-        return "current_schema()"
+        return "name from PRAGMA_database_list LIMIT 1"
 
     def explain_as_text(self, query: str) -> str:
         "Provide SQL for explaining a query, returned as table(varchar)"
